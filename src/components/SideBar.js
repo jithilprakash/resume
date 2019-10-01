@@ -19,7 +19,7 @@ import {
   Work
 } from "@material-ui/icons";
 import InboxIcon from "@material-ui/icons/InboxOutlined";
-import { Icon } from "@material-ui/core";
+import { Icon, Button } from "@material-ui/core";
 import {
   Router,
   Route,
@@ -43,6 +43,8 @@ import AccountTreeIcon from "@material-ui/icons/AccountTree";
 
 import DeveloperModeIcon from "@material-ui/icons/DeveloperMode";
 import DescriptionIcon from "@material-ui/icons/Description";
+
+// const pdf = require("../assets/JithilprakashPJ-Resume.pdf");
 
 const hist = createBrowserHistory();
 // const routes = () => (
@@ -81,7 +83,7 @@ function SideBar() {
   const classes = useStyles();
 
   const handleClick = text => {
-    console.log("clicked");
+    console.log("clicked", text);
     setPageindex(text);
   };
 
@@ -137,24 +139,48 @@ function SideBar() {
         </div> */}
         <Divider />
         <List>
-          {[
-            "Home",
-            "Profile",
-            "Contact Me",
-            "Projects",
-            "Git Page",
-            "Download Resume"
-          ].map((text, index) => (
-            <>
-              <ListItem button key={text} onClick={() => handleClick(index)}>
-                <ListItemIcon color='primary'>{getIcon(index)}</ListItemIcon>
-                {/* <Link to='/profile'>Home</Link> */}
+          {["Home", "Profile", "Contact Me", "Projects", "Git Page"].map(
+            (text, index) => (
+              <>
+                <ListItem button key={text} onClick={() => handleClick(index)}>
+                  <ListItemIcon color='primary'>{getIcon(index)}</ListItemIcon>
+                  {/* <Link to='/profile'>Home</Link> */}
 
-                <ListItemText primary={text} />
-              </ListItem>
-              {index == 3 ? <Divider /> : ""}
+                  <ListItemText primary={text} />
+                </ListItem>
+                {index == 3 ? <Divider /> : ""}
+              </>
+            )
+          )}
+          <div
+            style={{
+              width: "100%",
+              padding: 15,
+              height: 40,
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <>
+              <Button variant='contained' color='primary'>
+                <DescriptionIcon />
+                <Link
+                  style={{
+                    textDecoration: "none",
+                    color: "#fff",
+                    padding: 5,
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                  to='/JithilprakashPJ-Resume.pdf'
+                  target='_blank'
+                  download
+                >
+                  Download Resume
+                </Link>
+              </Button>
             </>
-          ))}
+          </div>
         </List>
       </Drawer>
       <main className={classes.content}>
