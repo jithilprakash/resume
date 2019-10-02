@@ -27,7 +27,10 @@ import {
   Divider,
   Grid,
   Icon,
-  Button
+  Button,
+  Fade,
+  Snackbar,
+  CircularProgress
 } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
 
@@ -54,16 +57,72 @@ const classes = {
 export default class Contact extends Component {
   state = {
     expanded: true,
-    input1: ""
+    input1: "",
+    name: "",
+    email: "",
+    message: "",
+    open: false,
+    Transition: Fade,
+    isLoading: false
   };
 
   handleExpandClick = () => {
     this.setState({ expanded: !this.state.expanded });
   };
 
+  handleClick = Transition => {
+    this.setState({
+      open: true,
+      Transition
+    });
+  };
+
+  handleClose = () => {
+    this.setState({
+      open: false
+    });
+  };
+
+  sendMail = async () => {
+    try {
+      this.setState({ isLoading: true });
+      const send = await fetch("http://localhost:4001/sendMail", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: this.state.name,
+          email: this.state.email,
+          message: this.state.message
+        })
+      });
+      if (send) {
+        console.log("Sent Successfully");
+        this.handleClick(Fade);
+        this.setState({ isLoading: false, name: "", email: "", message: "" });
+      }
+    } catch (error) {
+      console.log("Error happened", error);
+      this.setState({ isLoading: false });
+    } finally {
+      this.setState({ isLoading: false });
+    }
+  };
+
   render() {
     return (
       <div>
+        <Snackbar
+          open={this.state.open}
+          onClose={() => this.handleClose()}
+          TransitionComponent={this.state.Transition}
+          ContentProps={{
+            "aria-describedby": "message-id"
+          }}
+          message={<span id='message-id'>Message Sent Successfully</span>}
+        />
         <Card className={classes.card}>
           <CardHeader
             action={
@@ -120,6 +179,8 @@ export default class Contact extends Component {
                       </InputLabel>
                       <Input
                         id='input-with-icon-adornment'
+                        value={this.state.name}
+                        onChange={e => this.setState({ name: e.target.value })}
                         startAdornment={
                           <InputAdornment position='start'>
                             <AccountCircle />
@@ -135,6 +196,8 @@ export default class Contact extends Component {
                       </InputLabel>
                       <Input
                         fullWidth
+                        value={this.state.email}
+                        onChange={e => this.setState({ email: e.target.value })}
                         id='input-with-icon-adornment'
                         startAdornment={
                           <InputAdornment position='start'>
@@ -154,6 +217,10 @@ export default class Contact extends Component {
                         What do you want to say?
                       </InputLabel>
                       <Input
+                        value={this.state.message}
+                        onChange={e =>
+                          this.setState({ message: e.target.value })
+                        }
                         fullWidth
                         multiline={4}
                         id='input-with-icon-adornment'
@@ -175,7 +242,16 @@ export default class Contact extends Component {
                     width: "100%",
                     backgroundColor: "#1976D2"
                   }}
+                  onClick={() => this.sendMail()}
+                  disabled={this.state.isLoading}
                 >
+                  {this.state.isLoading ? (
+                    <CircularProgress
+                      style={{ height: "20%", color: "#fff" }}
+                    />
+                  ) : (
+                    ""
+                  )}{" "}
                   Send
                   {/* This Button uses a Font Icon, see the installation instructions in the docs. */}
                   {/* <Icon className={classes.rightIcon}>Send</Icon> */}

@@ -32,7 +32,7 @@ import { createBrowserHistory } from "history";
 
 import Main from "./main/main";
 import resume from "./resume/resume";
-import project from "./project/project";
+import Project from "./project/project";
 import Profile from "./profile/profile";
 import Contact from "./Contact/Contact";
 
@@ -43,6 +43,7 @@ import AccountTreeIcon from "@material-ui/icons/AccountTree";
 
 import DeveloperModeIcon from "@material-ui/icons/DeveloperMode";
 import DescriptionIcon from "@material-ui/icons/Description";
+import project from "./project/project";
 
 // const pdf = require("../assets/JithilprakashPJ-Resume.pdf");
 
@@ -94,6 +95,8 @@ function SideBar() {
       return <Profile />;
     } else if (pageindex == 2) {
       return <Contact />;
+    } else if (pageindex == 3) {
+      return <Project />;
     }
   };
 
