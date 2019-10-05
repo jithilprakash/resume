@@ -86,7 +86,7 @@ export default class Contact extends Component {
   sendMail = async () => {
     try {
       this.setState({ isLoading: true });
-      const send = await fetch("/sendMail", {
+      const send = await fetch("http://54.242.67.110:3000/sendMail", {
         method: "POST",
         headers: {
           Accept: "application/json",
