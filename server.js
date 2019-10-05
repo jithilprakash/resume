@@ -39,13 +39,13 @@ app.post("/sendMail", async (req, res) => {
     };
     await transporter.sendMail(options, (err, info) => {
       if (err) {
-        return res.status(500).send("Error when sending mail",err);
+        return res.status(500).send("Error when sending mail",err.toString());
       }
       return res.status(200).send("Mail Sent Successfully");
     });
   } catch (error) {
     console.log("Error", err);
-    return res.status(500).send("Error when sending mail");
+    return res.status(500).send("Error when sending mail",err.toString());
   }
 });
 
