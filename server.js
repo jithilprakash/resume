@@ -1,8 +1,7 @@
-const express = require('express');
-const path = require('path');
+const express = require("express");
+const path = require("path");
 const app = express();
 const fs = require("fs");
-
 
 const nodemailer = require("nodemailer");
 const cors = require("cors");
@@ -39,23 +38,24 @@ app.post("/sendMail", async (req, res) => {
     };
     await transporter.sendMail(options, (err, info) => {
       if (err) {
-        return res.status(500).send("Error when sending mail",err.toString());
+        console.log(err);
+
+        return res.status(500).send("Error when sending mail");
       }
       return res.status(200).send("Mail Sent Successfully");
     });
   } catch (error) {
     console.log("Error", err);
-    return res.status(500).send("Error when sending mail",err.toString());
+    return res.status(500).send("Error when sending mail");
   }
 });
 
+app.use(express.static(path.join(__dirname, "build")));
 
-app.use(express.static(path.join(__dirname, 'build')));
-
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+app.get("/", function(req, res) {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
-app.listen(3000,()=>{
-  console.log("PORT Running at 3000")
+app.listen(3000, () => {
+  console.log("PORT Running at 3000");
 });
